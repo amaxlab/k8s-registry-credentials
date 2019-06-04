@@ -7,11 +7,13 @@
     namespace: "{{ namespace }}"
   register: exists_registry_credentials
 
-- set_fact:
+- name: "Create registry_auth variable"
+  set_fact:
     registry_auth: "{{ username }}:{{ password }}"
   when: exists_registry_credentials.resources | length == 0
 
-- set_fact:
+- name: "Create registry_credentials variable"
+  set_fact:
     registry_credentials: '{"auths": {"{{ registry_name }}": {"username": "{{ username }}", "password": "{{ password }}", "email": "{{ email }}", "auth": "{{ registry_auth | b64encode }}"}}}'
   when: exists_registry_credentials.resources | length == 0
 

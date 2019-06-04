@@ -18,7 +18,7 @@ Example Playbook
 
     - hosts: deploy
       roles:
-         - { role: amaxlab.k8s-registry-credentials, namespace: default, username: test, password: test, registry_name: registry.gitlab.com, email: test@test.ru}
+         - { role: zyuskin.k8s_registry_credentials, namespace: payment-gate, username: username, password: password, registry_name: registry.gitlab.com, email: test@test.ru}
 
 License
 -------
