@@ -1,0 +1,13 @@
+galaxy_info:
+  author: Egor Zyuskin
+  description: Role for ansible. Create kubernetes secret for pull image from docker registry
+  company: Amaxlab
+  issue_tracker_url: https://github.com/amaxlab/k8s-registry-credentials/issues
+  license: MIT
+  min_ansible_version: 2.4
+  galaxy_tags:
+    - kubernetes
+    - docker
+    - registry
+    - auth
+dependencies: []

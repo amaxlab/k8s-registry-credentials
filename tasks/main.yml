@@ -1,0 +1,30 @@
+---
+- name: "Get {{ secret_name }} secret for namespace {{ namespace }}"
+  k8s_facts:
+    api_version: v1
+    kind: Secret
+    name: "{{ secret_name }}"
+    namespace: "{{ namespace }}"
+  register: exists_registry_credentials
+
+- set_fact:
+    registry_auth: "{{ username }}:{{ password }}"
+  when: exists_registry_credentials.resources | length == 0
+
+- set_fact:
+    registry_credentials: '{"auths": {"{{ registry_name }}": {"username": "{{ username }}", "password": "{{ password }}", "email": "{{ email }}", "auth": "{{ registry_auth | b64encode }}"}}}'
+  when: exists_registry_credentials.resources | length == 0
+
+- name: "Create secret {{ secret_name }} in {{ namespace }} namespace"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      data:
+        .dockerconfigjson: "{{ registry_credentials | to_json | b64encode }}"
+      kind: Secret
+      metadata:
+        name: "{{ secret_name }}"
+        namespace: "{{ namespace }}"
+      type: kubernetes.io/dockerconfigjson
+  when: exists_registry_credentials.resources | length == 0
